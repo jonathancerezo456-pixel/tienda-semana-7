@@ -1,61 +1,94 @@
-# Proyecto Tienda - Catálogo de Productos
-**Materia:** Programación Estructurada  
-**Estudiante:** Jonathan Andrés Cerezo Álava  
-**Actividad:** Semanas 5 y 6  
+# Tienda - Semana 7: Patrones de Diseno, Testing Unitario y TDA Lineales
+
+**Estudiante:** Jonathan Andres Cerezo Alava
+**Materia:** Programacion Estructurada
+**Actividad:** Semana 7
 
 ---
 
-## Descripción
-Este proyecto es una aplicación en Python para gestionar el catálogo de una tienda. Integra conceptos de programación orientada a objetos (clases, herencia, encapsulación y polimorfismo) desarrollados en semanas anteriores, junto con los nuevos temas:
-- **Semana 5:** Manejo de colecciones de datos (`list`, `dict` y `set`) para implementar operaciones CRUD.
-- **Semana 6:** Creación de una interfaz gráfica de usuario (GUI) interactiva usando la librería **Flet**.
+## Descripcion del proyecto
+
+Se implemento un sistema de gestion de pedidos para la tienda usando una **Cola (Queue)**
+como tipo de dato abstracto lineal, administrada a traves del patron de diseno **Repository**.
+
+### Problema seleccionado
+
+Cuando un cliente hace un pedido en la tienda, debe ser atendido en el mismo orden en que llego
+(el primero en llegar es el primero en ser atendido). Esto es un problema tipico de una **Cola FIFO**.
+
+### Estructura de datos: Cola (Queue)
+
+La cola fue implementada **manualmente** con nodos enlazados, sin usar `queue.Queue` ni `collections.deque`.
+
+| Operacion        | Metodo         | Descripcion                                 |
+|------------------|----------------|---------------------------------------------|
+| Agregar          | `encolar()`    | Agrega un elemento al final de la cola      |
+| Eliminar         | `desencolar()` | Elimina y retorna el elemento del frente    |
+| Consultar        | `frente()`     | Ve el siguiente sin eliminarlo              |
+| Verificar vacia  | `esta_vacia()` | Retorna True si no hay elementos            |
+| Cantidad         | `tamano()`     | Retorna el numero de elementos en la cola   |
+
+### Patron Repository
+
+`PedidoRepository` separa el acceso a los datos de la logica principal. La aplicacion no
+manipula la Cola directamente, sino a traves de metodos como `agregar_pedido()`,
+`procesar_siguiente()` y `ver_siguiente()`.
 
 ---
 
-## Requisitos e Instalación
+## Archivos del proyecto
 
-Para ejecutar la aplicación se necesita tener instalado Python (versión 3.10 o superior) y la librería `flet`:
-
-```bash
-pip install flet
+```
+tienda/
+|-- cola.py              # Cola FIFO manual con nodos enlazados (Semana 7)
+|-- pedido.py            # Clase Pedido con encapsulacion
+|-- repository.py        # Patron Repository para gestionar pedidos
+|-- demo_semana7.py      # Demostracion por consola
+|-- test_semana7.py      # 21 pruebas unitarias con pytest
+|
+|-- catalogo.py          # Semana 5: Colecciones list + dict + set
+|-- main_gui.py          # Semana 6: Interfaz grafica con Flet
+|-- producto.py
+|-- producto_electronico.py
+|-- marca.py
+|-- cliente.py
+|-- cliente_mayorista.py
+|-- cliente_minorista.py
+|-- README.md
 ```
 
 ---
 
-##  Cómo ejecutar el programa
+## Instalacion de dependencias
 
-### 1. Interfaz Gráfica (Semana 6)
-Para abrir la aplicación visual:
+```bash
+pip install pytest
+pip install flet==0.23.2
+```
+
+---
+
+## Ejecutar la demo (Semana 7)
+
+```bash
+cd "Programacion Estructurada\tienda"
+python demo_semana7.py
+```
+
+---
+
+## Ejecutar las pruebas unitarias
+
+```bash
+python -m pytest test_semana7.py -v
+```
+
+Resultado esperado: **21 passed**
+
+---
+
+## Ejecutar la interfaz grafica (Semana 6)
+
 ```bash
 python main_gui.py
 ```
-
-### 2. Prueba por Consola (Semana 5 y anteriores)
-Para ver la demostración por terminal del catálogo y polimorfismo:
-```bash
-python main.py
-```
-
----
-
-##  Estructura de Archivos
-
-- `producto.py`: Clase base con atributos privados (`__nombre`, `__precio`, `__cantidad`) y métodos getters/setters.
-- `producto_electronico.py`: Clase hija que hereda de `Producto` y añade `marca` y `garantía (años)`.
-- `marca.py`: Clase auxiliar para representar la marca del producto.
-- `cliente.py`: Clase abstracta que define el método para calcular descuentos.
-- `cliente_mayorista.py` / `cliente_minorista.py`: Clases que aplican diferentes porcentajes de descuento (polimorfismo).
-- `catalogo.py`: **(Semana 5)** Contiene la lógica del catálogo utilizando tres colecciones:
-  - `list`: Mantiene el orden en que se agregan los productos para listarlos o recorrerlos.
-  - `dict`: Permite búsquedas rápidas por nombre en tiempo $O(1)$.
-  - `set`: Evita el ingreso de productos con nombres duplicados.
-- `main_gui.py`: **(Semana 6)** Interfaz gráfica desarrollada con Flet, con tabla de datos, validaciones y botones CRUD.
-
----
-
-##  Funcionalidades de la Interfaz Gráfica
-1. **Agregar producto:** Permite ingresar nombre, precio, cantidad y marca. Si se marca la casilla "Es electrónico", habilita el campo de garantía en años.
-2. **Buscar:** Busca coincidencias por nombre dentro del catálogo y filtra la tabla.
-3. **Actualizar:** Modifica precio y stock del producto seleccionado.
-4. **Eliminar:** Quita un producto de todas las colecciones tras confirmar la acción.
-5. **Listar todos:** Vuelve a cargar todos los registros existentes en la tabla.
