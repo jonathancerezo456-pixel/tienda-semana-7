@@ -4,7 +4,6 @@
 ![GUI](https://img.shields.io/badge/GUI-Flet%200.23.2-00bcd4?logo=flutter&logoColor=white)
 ![Testing](https://img.shields.io/badge/Pytest-24%20Passed-brightgreen?logo=pytest&logoColor=white)
 ![Persistencia](https://img.shields.io/badge/Persistencia-JSON-orange)
-![Estado](https://img.shields.io/badge/Examen-Completado-success)
 
 **Estudiante:** Jonathan Andrés Cerezo Álava  
 **Materia:** Programación Estructurada  
