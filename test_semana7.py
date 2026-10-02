@@ -153,3 +153,72 @@ class TestPedidoRepository:
         procesados = self.repo.listar_procesados()
         assert len(procesados) == 1
         assert procesados[0].cliente == "Luis"
+
+
+# ============================================================
+# PRUEBAS DE PERSISTENCIA (JSON)
+# ============================================================
+
+from catalogo import Catalogo
+from producto import Producto
+from producto_electronico import ProductoElectronico
+from marca import Marca
+from persistencia import GestorPersistencia
+
+
+class TestPersistencia:
+
+    def test_guardar_y_cargar_catalogo(self, tmp_path):
+        """Debe guardar y recuperar productos normales y electronicos correctamente."""
+        archivo = str(tmp_path / "test_productos.json")
+        cat_origen = Catalogo()
+        cat_origen.agregar(Producto("Arroz", 2.5, 50))
+        cat_origen.agregar(ProductoElectronico("TV 4K", 600.0, 5, 2, Marca("LG")))
+
+        # Guardar
+        assert GestorPersistencia.guardar_catalogo(cat_origen, archivo) is True
+
+        # Cargar en un catalogo nuevo
+        cat_destino = Catalogo()
+        assert GestorPersistencia.cargar_catalogo(cat_destino, archivo) is True
+        assert cat_destino.total() == 2
+
+        prod1 = cat_destino.buscar("Arroz")
+        assert prod1 is not None
+        assert prod1.get_precio() == 2.5
+        assert prod1.get_cantidad() == 50
+
+        prod2 = cat_destino.buscar("TV 4K")
+        assert prod2 is not None
+        assert isinstance(prod2, ProductoElectronico)
+        assert prod2.get_garantia() == 2
+        assert prod2.get_marca().get_nombre() == "LG"
+
+    def test_guardar_y_cargar_pedidos(self, tmp_path):
+        """Debe guardar y recuperar pedidos pendientes y procesados respetando el orden FIFO."""
+        archivo = str(tmp_path / "test_pedidos.json")
+        repo_origen = PedidoRepository()
+        p1 = Pedido("Cliente 1", "Laptop", 1, 1000.0)
+        p2 = Pedido("Cliente 2", "Mouse", 2, 25.0)
+        repo_origen.agregar_pedido(p1)
+        repo_origen.agregar_pedido(p2)
+        repo_origen.procesar_siguiente()  # p1 pasa a procesado, p2 queda pendiente
+
+        assert GestorPersistencia.guardar_pedidos(repo_origen, archivo) is True
+
+        repo_destino = PedidoRepository()
+        assert GestorPersistencia.cargar_pedidos(repo_destino, archivo) is True
+        assert repo_destino.total_pendientes() == 1
+        assert repo_destino.total_procesados() == 1
+
+        siguiente = repo_destino.ver_siguiente()
+        assert siguiente.cliente == "Cliente 2"
+        assert siguiente.producto == "Mouse"
+
+    def test_cargar_archivo_inexistente_retorna_false(self, tmp_path):
+        """Si el archivo no existe, debe retornar False sin lanzar excepcion."""
+        archivo = str(tmp_path / "inexistente.json")
+        cat = Catalogo()
+        assert GestorPersistencia.cargar_catalogo(cat, archivo) is False
+        repo = PedidoRepository()
+        assert GestorPersistencia.cargar_pedidos(repo, archivo) is False

@@ -6,14 +6,20 @@ class Pedido:
 
     _contador = 1  # ID autoincrementable
 
-    def __init__(self, cliente, producto, cantidad, precio):
-        self.__id       = Pedido._contador
-        Pedido._contador += 1
+    def __init__(self, cliente, producto, cantidad, precio, id_pedido=None, fecha=None):
+        if id_pedido is not None:
+            self.__id = id_pedido
+            if id_pedido >= Pedido._contador:
+                Pedido._contador = id_pedido + 1
+        else:
+            self.__id = Pedido._contador
+            Pedido._contador += 1
+
         self.__cliente  = cliente
         self.__producto = producto
         self.__cantidad = cantidad
         self.__precio   = precio
-        self.__fecha    = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.__fecha    = fecha if fecha else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.__estado   = "pendiente"
 
     @property
@@ -38,6 +44,31 @@ class Pedido:
         if valor not in {"pendiente", "procesado", "cancelado"}:
             raise ValueError("Estado invalido. Opciones: pendiente, procesado, cancelado")
         self.__estado = valor
+
+    def to_dict(self):
+        return {
+            "id": self.__id,
+            "cliente": self.__cliente,
+            "producto": self.__producto,
+            "cantidad": self.__cantidad,
+            "precio": self.__precio,
+            "total": self.total,
+            "fecha": self.__fecha,
+            "estado": self.__estado
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        p = cls(
+            cliente=data["cliente"],
+            producto=data["producto"],
+            cantidad=data["cantidad"],
+            precio=data["precio"],
+            id_pedido=data.get("id"),
+            fecha=data.get("fecha")
+        )
+        p.estado = data.get("estado", "pendiente")
+        return p
 
     def __str__(self):
         return (f"Pedido #{self.__id} | {self.__cliente} | "

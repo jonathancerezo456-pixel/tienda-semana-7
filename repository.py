@@ -43,3 +43,7 @@ class PedidoRepository:
 
     def total_procesados(self):
         return len(self._procesados)
+
+    def restaurar_procesado(self, pedido):
+        """Agrega un pedido previamente procesado (util para persistencia)."""
+        self._procesados.append(pedido)

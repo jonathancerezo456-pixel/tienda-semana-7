@@ -1,0 +1,38 @@
+[
+    {
+        "nombre": "Televisor",
+        "precio": 500.0,
+        "cantidad": 5,
+        "es_electronico": true,
+        "garantia": 2,
+        "marca": "Samsung"
+    },
+    {
+        "nombre": "Celular",
+        "precio": 350.0,
+        "cantidad": 12,
+        "es_electronico": true,
+        "garantia": 1,
+        "marca": "Sony"
+    },
+    {
+        "nombre": "Arroz",
+        "precio": 2.5,
+        "cantidad": 100,
+        "es_electronico": false
+    },
+    {
+        "nombre": "Aceite",
+        "precio": 3.75,
+        "cantidad": 80,
+        "es_electronico": false
+    },
+    {
+        "nombre": "Audifonos",
+        "precio": 45.0,
+        "cantidad": 30,
+        "es_electronico": true,
+        "garantia": 1,
+        "marca": "Generica"
+    }
+]
