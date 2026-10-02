@@ -4,7 +4,7 @@
 **Materia:** Programación Estructurada  
 **Lenguaje Utilizado:** Python 3.10+  
 **Entrega:** Examen — Presentación y Explicación del Proyecto (Semanas 5, 6 y 7)  
-**Repositorio GitHub:** [jonathancerezo456-pixel/tienda-semana-7](https://github.com/jonathancerezo456-pixel/tienda-semana-7.git)  
+**Repositorio GitHub:** [jonathancerezo456-pixel/tienda-semana-7](https://github.com/jonathancerezo456-pixel/tienda-semana-7)  
 
 ---
 
