@@ -96,8 +96,8 @@ tienda/
 ├── cliente_minorista.py     # Cliente con 5% de descuento (Polimorfismo)
 ├── main.py                  # Demostración del primer parcial por consola
 │
-├── productos.json           # Archivo de persistencia de productos
-├── pedidos.json             # Archivo de persistencia de pedidos
+├── productos.json           # Archivo de persistencia (se genera automáticamente al iniciar)
+├── pedidos.json             # Archivo de persistencia de pedidos (se genera automáticamente)
 └── README.md                # Documentación del proyecto
 ```
 
@@ -143,10 +143,10 @@ python main.py
 
 ## 6. Demostración de Persistencia en Vivo (Paso a Paso)
 
-Para verificar la persistencia de datos durante la evaluación:
-1. Ejecute la aplicación con `python main_gui.py`.
-2. En la pestaña **Catálogo de Productos**, agregue un nuevo producto (ej. *"Tablet Lenovo"*, precio `$220`, stock `8`).
-3. En la pestaña **Cola de Pedidos**, agregue un nuevo pedido para dicho producto.
-4. Cierre la ventana de la aplicación.
-5. Abra los archivos `productos.json` y `pedidos.json` en el editor para constatar que los datos están grabados en disco.
-6. Vuelva a ejecutar `python main_gui.py` y observe cómo la aplicación recupera exactamente todos los datos registrados.
+Para verificar la tolerancia a fallos y la persistencia de datos durante la evaluación:
+1. **Generación automática:** Si la aplicación se inicia sin archivos JSON previos, el sistema detecta su ausencia y genera automáticamente `productos.json` y `pedidos.json` con datos iniciales de demostración.
+2. **Registro de datos:** En la pestaña **Catálogo de Productos**, agregue un nuevo producto (ej. *"Tablet Lenovo"*, precio `$220`, stock `8`).
+3. **Gestión en cola:** En la pestaña **Cola de Pedidos**, agregue un pedido para dicho producto y atienda uno de los pedidos pendientes mediante el botón FIFO.
+4. **Cierre de aplicación:** Cierre la ventana de la interfaz gráfica.
+5. **Comprobación en disco:** Abra los archivos `productos.json` y `pedidos.json` generados en el editor para constatar que los datos nuevos y modificados quedaron registrados en disco.
+6. **Recuperación:** Vuelva a ejecutar `python main_gui.py` y observe cómo la aplicación recupera exactamente todo el estado anterior.
